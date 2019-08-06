@@ -115,7 +115,25 @@ def main():
         out_processor = ActivationsProcessor(mode='w', **vars(args))
     else:
         # perform peak picking on the activation function
-        peak_picking = ADSRNoteTrackingProcessor(**vars(args))
+        # peak_picking = ADSRNoteTrackingProcessor(**vars(args))
+        onset_note_prob = 0.9
+        offset_prob = 0.1
+        threshold = 0.5
+
+        peak_picking = ADSRNoteTrackingProcessor(
+            onset_prob=onset_note_prob,
+            note_prob=onset_note_prob,
+            offset_prob=offset_prob,
+            attack_length=0.04,
+            decay_length=0.04,
+            release_length=0.02,
+            complete=True,
+            onset_threshold=threshold,
+            note_threshold=threshold,
+            fps=50,
+            pitch_offset=21
+        )
+
         # output everything in the right format
         if args.output_format is None:
             output = write_notes
